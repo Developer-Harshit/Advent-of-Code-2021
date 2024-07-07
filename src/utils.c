@@ -10,12 +10,15 @@ FILE* get_file(int mode){
     return fopen(path, "r");
 }
 char* read_line(FILE* file){
+    return read_until(file,'\n');
+}
+char* read_until(FILE* file ,char terminator){
     int c;
     int offset = 0;
     int buffer_size = sizeof(char) * 4;
     char* buffer = malloc(buffer_size);
     assert(buffer != NULL);
-    while(c = fgetc(file) , c != '\n' && c != EOF){
+    while(c = fgetc(file) , c != terminator && c != EOF){
         if (offset == buffer_size - 1){
             buffer_size *=2;
             buffer = realloc(buffer, buffer_size);
@@ -35,6 +38,7 @@ char* read_line(FILE* file){
     buffer[offset] = '\0';
     return buffer;
 }
+
 void free_line(char* line_data){
     free(line_data);
 }
